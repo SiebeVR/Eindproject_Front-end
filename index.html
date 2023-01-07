@@ -1,0 +1,266 @@
+<html>
+    <head>
+        <title>Front-end for API</title>
+        <script defer src="https://unpkg.com/alpinejs@3.5.0/dist/cdn.min.js"></script>
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <!---Get leaderboard--->
+        <div x-data="{
+            responsedata: [],
+            async getData() {
+                fetch('https://main-service-siebevr.cloud.okteto.net/leaderboard')
+                    .then(response => response.json())
+                    .then(data => {
+                        this.responsedata = data;
+                        console.log('responsedata:', this.responsedata);
+                    });
+            }
+        }" x-init="getData">
+        <button type="button" @click="getData">Refresh leaderboard</button>
+        <ol>
+            <template x-for="rider in responsedata">
+                    <li>
+                        <span x-text="rider.naam"></span>
+                        <span x-text="rider.ploeg"></span>
+                        <span x-text="rider.punten"></span>
+                    </li>
+            </template>
+        </ol>
+        </div>
+        <!---Get Rider By ID--->
+        <div x-data="{
+            riderid: '',
+            responsedata: [],
+            async getRider() {
+                fetch('https://main-service-siebevr.cloud.okteto.net/rider/' +  this.riderid)
+                    .then(response => response.json())
+                    .then(data => {
+                        this.responsedata = data;
+                        console.log('responsedata:', this.responsedata);
+                    });
+            }
+        }">
+        <input type="text" x-model="riderid" placeholder="Search on rider ID">
+        <button type="button" @click="getRider()">Search by ID</button>
+        <ul>
+            <template x-for="i in responsedata">
+                    <li>
+                        <span x-text="i"></span>
+                    </li>
+            </template>
+        </ul>
+        </div>
+        <!---Get Riders--->
+        <div x-data="{
+            riderid: '',
+            responsedata: [],
+            async getRiders() {
+                fetch('https://main-service-siebevr.cloud.okteto.net/riders')
+                    .then(response => response.json())
+                    .then(data => {
+                        this.responsedata = data;
+                        console.log('responsedata:', this.responsedata);
+                    });
+            }
+        }">
+        <button type="button" @click="getRiders()">Lijst van alle riders</button>
+        <ul>
+            <template x-for="i in responsedata">
+                    <li>
+                        <span x-text="i.id"></span>
+                        <span x-text="i.naam"></span>
+                        <span x-text="i.ploeg"></span>
+                        <span x-text="i.punten"></span>
+                        <span x-text="i.land"></span>
+                        <span x-text="i.leeftijd"></span>
+                    </li>
+            </template>
+        </ul>
+        </div>
+        <!---Get Ploegen--->
+        <div x-data="{
+            responsedata: [],
+            async getPloegen() {
+                fetch('https://main-service-siebevr.cloud.okteto.net/ploegen')
+                    .then(response => response.json())
+                    .then(data => {
+                        this.responsedata = data;
+                        console.log('responsedata:', this.responsedata);
+                    });
+            }
+        }">
+        <button type="button" @click="getPloegen()">Lijst van alle ploegen</button>
+        <ul>
+            <template x-for="i in responsedata">
+                    <li>
+                        <span x-text="i.naam"></span>
+                        <span x-text="i.land"></span>
+                    </li>
+            </template>
+        </ul>
+        </div>
+        <!---Get Users--->
+        <div x-data="{
+            responsedata: [],
+            async getUsers() {
+                fetch('https://main-service-siebevr.cloud.okteto.net/users')
+                    .then(response => response.json())
+                    .then(data => {
+                        this.responsedata = data;
+                        console.log('responsedata:', this.responsedata);
+                    });
+            }
+        }">
+        <button type="button" @click="getUsers()">Lijst van alle users</button>
+        <ul>
+            <template x-for="i in responsedata">
+                    <li>
+                        <span x-text="i.username"></span>
+                        <span x-text="i.password"></span>
+                    </li>
+            </template>
+        </ul>
+        </div>
+        <!---Add Riders--->
+        <div>
+            <p>Voeg een rider toe</p>
+            <div x-data="{
+                responsedata: null,
+                riderid: '',
+                ridernaam: '',
+                riderleeftijd: '',
+                riderland: '',
+                riderploeg: '',
+                riderpunten: '',
+                async addRider() {
+                    fetch('https://main-service-siebevr.cloud.okteto.net/addrider/', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json; charset=UTF-8',
+                        },
+                        body: JSON.stringify({
+                            id: this.riderid,
+                            naam: this.ridernaam,
+                            leeftijd: this.riderleeftijd,
+                            land: this.riderland,
+                            ploeg: this.riderploeg,
+                            punten: this.riderpunten
+                        })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        this.responsedata = data;
+                        console.log('responsedata:',this.responsedata);
+                    });
+                }
+                }">
+                <input type="text" x-model="riderid" placeholder="Geef rider ID">
+                <input type="text" x-model="ridernaam" placeholder="Geef rider naam">
+                <input type="text" x-model="riderleeftijd" placeholder="Geef rider leeftijd">
+                <input type="text" x-model="riderland" placeholder="Geef rider land">
+                <input type="text" x-model="riderploeg" placeholder="Geef rider ploeg">
+                <input type="text" x-model="riderpunten" placeholder="Geef rider punten">
+                <button x-on:click="addRider">Voeg rider toe</button>
+            </div>
+        </div>
+        <!---Add Ploegen--->
+        <div>
+            <p>Voeg een ploeg toe</p>
+            <div x-data="{
+                responsedata: null,
+                ploegnaam: '',
+                ploegland: '',
+                async addPloeg() {
+                    fetch('https://main-service-siebevr.cloud.okteto.net/addploeg/', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json; charset=UTF-8',
+                        },
+                        body: JSON.stringify({
+                            naam: this.ploegnaam,
+                            land: this.ploegland
+                        })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        this.responsedata = data;
+                        console.log('responsedata:',this.responsedata);
+                    });
+                }
+                }">
+                <input type="text" x-model="ploegnaam" placeholder="Geef ploeg naam">
+                <input type="text" x-model="ploegland" placeholder="Geef ploeg land">
+                <button x-on:click="addPloeg">Voeg ploeg toe</button>
+            </div>
+        </div>
+        <!---Add Users--->
+        <div>
+            <p>Voeg een user toe</p>
+            <div x-data="{
+                responsedata: null,
+                username: '',
+                password: '',
+                async addUser() {
+                    fetch('https://main-service-siebevr.cloud.okteto.net/adduser/', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json; charset=UTF-8',
+                        },
+                        body: JSON.stringify({
+                            username: this.username,
+                            password: this.password
+                        })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        this.responsedata = data;
+                        console.log('responsedata:',this.responsedata);
+                    });
+                }
+                }">
+                <input type="text" x-model="username" placeholder="Geef username">
+                <input type="text" x-model="password" placeholder="Geef password">
+                <button x-on:click="addUser">Voeg user toe</button>
+            </div>
+        </div>
+        <!---Post Token--->
+        <div>
+            <p>Post token</p>
+            <div x-data="{
+                responsedata: null,
+                username: '',
+                password: '',
+                async postToken() {
+                    console.log('username:',this.username);
+                    console.log('password',this.password);
+                    this.responsedata = await (await fetch('https://main-service-siebevr.cloud.okteto.net/token', 
+                    {
+                        method: 'POST',
+                        body : 'username=' + this.username + '&password=' +  this.password,
+                        headers: {
+                            'Content-type': 'application/x-www-form-urlencoded',
+                        }
+                    })).json();
+                    console.log('responsedata:',this.responsedata);
+                }
+                }">
+                <input type="text" x-model="username" placeholder="Geef username">
+                <input type="text" x-model="password" placeholder="Geef password">
+                <button x-on:click="postToken">Post token</button>
+                <ul>
+                    <table class="table">
+                        <thead>
+                            <th scope="col">access_token</th>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td x-text="responsedata.access_token"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </ul>
+            </div>
+        </div>
+    </body>
+</html>
