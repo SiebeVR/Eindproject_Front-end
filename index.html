@@ -5,8 +5,9 @@
         <link rel="stylesheet" href="style.css">
     </head>
     <body>
+    <div class="container">
         <!---Get leaderboard--->
-        <div x-data="{
+        <div class="width" x-data="{
             responsedata: [],
             async getData() {
                 fetch('https://main-service-siebevr.cloud.okteto.net/leaderboard')
@@ -29,7 +30,7 @@
         </ol>
         </div>
         <!---Get Rider By ID--->
-        <div x-data="{
+        <div class="width" x-data="{
             riderid: '',
             responsedata: [],
             async getRider() {
@@ -52,7 +53,7 @@
         </ul>
         </div>
         <!---Get Riders--->
-        <div x-data="{
+        <div class="width" x-data="{
             riderid: '',
             responsedata: [],
             async getRiders() {
@@ -79,7 +80,7 @@
         </ul>
         </div>
         <!---Get Ploegen--->
-        <div x-data="{
+        <div class="width" x-data="{
             responsedata: [],
             async getPloegen() {
                 fetch('https://main-service-siebevr.cloud.okteto.net/ploegen')
@@ -101,7 +102,7 @@
         </ul>
         </div>
         <!---Get Users--->
-        <div x-data="{
+        <div class="width" x-data="{
             responsedata: [],
             async getUsers() {
                 fetch('https://main-service-siebevr.cloud.okteto.net/users')
@@ -123,7 +124,7 @@
         </ul>
         </div>
         <!---Add Riders--->
-        <div>
+        <div class="width">
             <p>Voeg een rider toe</p>
             <div x-data="{
                 responsedata: null,
@@ -165,7 +166,7 @@
             </div>
         </div>
         <!---Add Ploegen--->
-        <div>
+        <div class="width">
             <p>Voeg een ploeg toe</p>
             <div x-data="{
                 responsedata: null,
@@ -195,7 +196,7 @@
             </div>
         </div>
         <!---Add Users--->
-        <div>
+        <div class="width">
             <p>Voeg een user toe</p>
             <div x-data="{
                 responsedata: null,
@@ -225,7 +226,7 @@
             </div>
         </div>
         <!---Post Token--->
-        <div>
+        <div class="width">
             <p>Post token</p>
             <div x-data="{
                 responsedata: null,
@@ -249,7 +250,7 @@
                 <input type="text" x-model="password" placeholder="Geef password">
                 <button x-on:click="postToken">Post token</button>
                 <ul>
-                    <table class="table">
+                    <table>
                         <thead>
                             <th scope="col">access_token</th>
                         </thead>
@@ -262,5 +263,6 @@
                 </ul>
             </div>
         </div>
+    </div>
     </body>
 </html>
